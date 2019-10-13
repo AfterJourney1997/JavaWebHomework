@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <bean class="com.meeting.entity.Car" id="car1" p:brand="奔驰" p:color="红色" p:output="1.9L"/>
+
+    <bean class="com.meeting.entity.Car" id="car2" p:brand="宝马" p:color="绿色" p:output="1.9L"/>
+
+    <bean class="com.meeting.entity.Boss" id="boss1">
+        <property name="car" ref="car1"/>
+        <property name="corporation" value="淘宝"/>
+        <property name="hobby" value="打架"/>
+        <property name="name" value="赵本山"/>
+    </bean>
+
+    <bean class="com.meeting.entity.Boss" id="boss2">
+        <property name="car" ref="car2"/>
+        <property name="corporation" value="京东"/>
+        <property name="hobby" value="嫖娼"/>
+        <property name="name" value="刘东"/>
+    </bean>
+
+    <bean id="meeting" class="com.meeting.entity.Meeting">
+        <property name="theme" value="会议主题"/>
+        <property name="bosses">
+            <list>
+                <ref bean="boss1"/>
+                <ref bean="boss2"/>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 自动扫描service层 -->
+    <context:component-scan base-package="com.meeting.service" />
+
+    <!-- 自动扫描dao层 -->
+    <context:component-scan base-package="com.meeting.dao" />
+
+
+</beans>
