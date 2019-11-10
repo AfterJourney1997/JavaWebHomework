@@ -1,0 +1,25 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<table border="1">
+
+    <div id="manager">
+        <ul class="tree">
+            <li class="pro">
+                <span class="open" onclick="toggleTable(this)">学生管理</span>
+                <ul class="show">
+                    <li><a href="/examsystem/studentadd">添加学生</a> </li>
+                    <li><a href="/examsystem/studentdel?scid=${sessionScope.school.getScId()}">删除学生</a></li>
+                    <li><a href="/examsystem/studentsel">查询学生</a></li>
+                </ul>
+            </li>
+            <li class="pro">
+                <span class="closed" onclick="toggleTable(this)">试卷管理</span>
+                <ul class="hide">
+                    <li><a href="/examsystem/testadd">添加试卷</a></li>
+                    <li><a href="/examsystem/testdel">删除试卷</a></li>
+                    <li><a href="/examsystem/testcor">批改试卷</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</table>

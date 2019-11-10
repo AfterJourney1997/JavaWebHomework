@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.examSystem.dao.ChoiceMapper">
+  <resultMap id="BaseResultMap" type="com.examSystem.entity.Choice">
+    <id column="cq_id" jdbcType="INTEGER" property="cqId" />
+    <result column="cq_content" jdbcType="VARCHAR" property="cqContent" />
+    <result column="cq_a" jdbcType="VARCHAR" property="cqA" />
+    <result column="cq_b" jdbcType="VARCHAR" property="cqB" />
+    <result column="cq_c" jdbcType="VARCHAR" property="cqC" />
+    <result column="cq_d" jdbcType="VARCHAR" property="cqD" />
+    <result column="cq_correct" jdbcType="CHAR" property="cqCorrect" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from exam.choice
+    where cq_id = #{cqId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.examSystem.entity.Choice">
+    insert into exam.choice (cq_id, cq_content, cq_a, 
+      cq_b, cq_c, cq_d, cq_correct
+      )
+    values (#{cqId,jdbcType=INTEGER}, #{cqContent,jdbcType=VARCHAR}, #{cqA,jdbcType=VARCHAR}, 
+      #{cqB,jdbcType=VARCHAR}, #{cqC,jdbcType=VARCHAR}, #{cqD,jdbcType=VARCHAR}, #{cqCorrect,jdbcType=CHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.examSystem.entity.Choice">
+    update exam.choice
+    set cq_content = #{cqContent,jdbcType=VARCHAR},
+      cq_a = #{cqA,jdbcType=VARCHAR},
+      cq_b = #{cqB,jdbcType=VARCHAR},
+      cq_c = #{cqC,jdbcType=VARCHAR},
+      cq_d = #{cqD,jdbcType=VARCHAR},
+      cq_correct = #{cqCorrect,jdbcType=CHAR}
+    where cq_id = #{cqId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select cq_id, cq_content, cq_a, cq_b, cq_c, cq_d, cq_correct
+    from exam.choice
+    where cq_id = #{cqId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select cq_id, cq_content, cq_a, cq_b, cq_c, cq_d, cq_correct
+    from exam.choice
+  </select>
+</mapper>

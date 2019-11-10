@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.examSystem.dao.LoginMapper">
+  <resultMap id="BaseResultMap" type="com.examSystem.entity.Login">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="identity" jdbcType="INTEGER" property="identity" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from exam.login
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="delBysAccount" parameterType="java.lang.String">
+    delete from exam.login
+    where account= #{Account,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.examSystem.entity.Login">
+    insert into exam.login (id, identity, account, 
+      password, content)
+    values (#{id,jdbcType=INTEGER}, #{identity,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.examSystem.entity.Login">
+    update exam.login
+    set identity = #{identity,jdbcType=INTEGER},
+      account = #{account,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, identity, account, password, content
+    from exam.login
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, identity, account, password, content
+    from exam.login
+  </select>
+  <select id="selectByIdentity" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, identity, account, password, content
+    from exam.login
+    where identity = #{identity, jdbcType=INTEGER}
+  </select>
+</mapper>

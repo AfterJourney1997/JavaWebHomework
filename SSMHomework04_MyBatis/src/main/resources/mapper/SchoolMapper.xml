@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.examSystem.dao.SchoolMapper">
+  <resultMap id="BaseResultMap" type="com.examSystem.entity.School">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sc_id" jdbcType="VARCHAR" property="scId" />
+    <result column="sc_name" jdbcType="VARCHAR" property="scName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from exam.school
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.examSystem.entity.School">
+    insert into exam.school (id, sc_id, sc_name
+      )
+    values (#{id,jdbcType=INTEGER}, #{scId,jdbcType=VARCHAR}, #{scName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.examSystem.entity.School">
+    update exam.school
+    set sc_id = #{scId,jdbcType=VARCHAR},
+      sc_name = #{scName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, sc_id, sc_name
+    from exam.school
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, sc_id, sc_name
+    from exam.school
+  </select>
+  <select id="selectById" resultMap="BaseResultMap">
+    select id, sc_id, sc_name
+    from exam.school
+    where sc_id = #{schoolId, jdbcType=VARCHAR}
+  </select>
+</mapper>

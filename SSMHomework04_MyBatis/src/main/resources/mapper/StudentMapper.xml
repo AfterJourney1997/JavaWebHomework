@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.examSystem.dao.StudentMapper">
+  <resultMap id="BaseResultMap" type="com.examSystem.entity.Student">
+    <id column="s_id" jdbcType="INTEGER" property="sId" />
+    <result column="s_account" jdbcType="VARCHAR" property="sAccount" />
+    <result column="s_name" jdbcType="VARCHAR" property="sName" />
+    <result column="sc_id" jdbcType="VARCHAR" property="scId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from exam.student
+    where s_id = #{sId,jdbcType=INTEGER}
+  </delete>
+  <delete id="delBysAccount" parameterType="java.lang.String">
+    delete from exam.student
+    where s_account= #{sAccount,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.examSystem.entity.Student">
+    insert into exam.student (s_id, s_account, s_name, 
+      sc_id)
+    values (#{sId,jdbcType=INTEGER}, #{sAccount,jdbcType=VARCHAR}, #{sName,jdbcType=VARCHAR}, 
+      #{scId,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.examSystem.entity.Student">
+    update exam.student
+    set s_account = #{sAccount,jdbcType=VARCHAR},
+      s_name = #{sName,jdbcType=VARCHAR},
+      sc_id = #{scId,jdbcType=VARCHAR}
+    where s_id = #{sId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select s_id, s_account, s_name, sc_id
+    from exam.student
+    where s_id = #{sId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select s_id, s_account, s_name, sc_id
+    from exam.student
+  </select>
+  <select id="selectByAccount" resultMap="BaseResultMap">
+    select s_id, s_account, s_name, sc_id
+    from exam.student
+    where s_account = #{account, jdbcType=VARCHAR}
+  </select>
+  <select id="getAllSchoolStudent" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *
+    from exam.student
+    where sc_id = #{scId, jdbcType=VARCHAR}
+  </select>
+</mapper>

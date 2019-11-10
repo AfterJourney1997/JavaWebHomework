@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.examSystem.dao.ArrangeMapper">
+  <resultMap id="BaseResultMap" type="com.examSystem.entity.Arrange">
+    <id column="arr_id" jdbcType="INTEGER" property="arrId" />
+    <result column="test_id" jdbcType="INTEGER" property="testId" />
+    <result column="sc_id" jdbcType="VARCHAR" property="scId" />
+    <result column="arr_name" jdbcType="VARCHAR" property="arrName" />
+    <result column="arr_start" jdbcType="TIMESTAMP" property="arrStart" />
+    <result column="arr_stop" jdbcType="TIMESTAMP" property="arrStop" />
+    <result column="arr_status" jdbcType="INTEGER" property="arrStatus" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from exam.arrange
+    where arr_id = #{arrId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByPrimaryKeyTest" parameterType="java.lang.Integer">
+    delete from exam.arrange
+    where test_id = #{testId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.examSystem.entity.Arrange">
+    insert into exam.arrange (arr_id, test_id, sc_id, 
+      arr_name, arr_start, arr_stop, arr_status
+      )
+    values (#{arrId,jdbcType=INTEGER}, #{testId,jdbcType=INTEGER}, #{scId,jdbcType=VARCHAR}, 
+      #{arrName,jdbcType=VARCHAR}, #{arrStart,jdbcType=TIMESTAMP}, #{arrStop,jdbcType=TIMESTAMP}, #{arrStatus,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.examSystem.entity.Arrange">
+    update exam.arrange
+    set test_id = #{testId,jdbcType=INTEGER},
+      sc_id = #{scId,jdbcType=VARCHAR},
+      arr_name = #{arrName,jdbcType=VARCHAR},
+      arr_start = #{arrStart,jdbcType=TIMESTAMP},
+      arr_stop = #{arrStop,jdbcType=TIMESTAMP},
+      arr_status = #{arrStatus,jdbcType=INTEGER}
+    where arr_id = #{arrId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select arr_id, test_id, sc_id, arr_name, arr_start, arr_stop, arr_status
+    from exam.arrange
+    where arr_id = #{arrId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select arr_id, test_id, sc_id, arr_name, arr_start, arr_stop, arr_status
+    from exam.arrange
+  </select>
+  <select id="selectBySchoolId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select arr_id, test_id, sc_id, arr_name, arr_start, arr_stop, arr_status
+    from exam.arrange
+    where sc_id = #{schoolId, jdbcType=VARCHAR}
+  </select>
+</mapper>

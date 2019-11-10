@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.examSystem.dao.AnswerMapper">
+  <resultMap id="BaseResultMap" type="com.examSystem.entity.Answer">
+    <id column="answer_id" jdbcType="INTEGER" property="answerId" />
+    <result column="arr_id" jdbcType="INTEGER" property="arrId" />
+    <result column="test_id" jdbcType="INTEGER" property="testId" />
+    <result column="s_account" jdbcType="VARCHAR" property="sAccount" />
+    <result column="s_name" jdbcType="VARCHAR" property="sName" />
+    <result column="cq_answer" jdbcType="VARCHAR" property="cqAnswer" />
+    <result column="tfq_answer" jdbcType="VARCHAR" property="tfqAnswer" />
+    <result column="s_result" jdbcType="REAL" property="sResult" />
+    <result column="saq_answer" jdbcType="LONGVARCHAR" property="saqAnswer" />
+  </resultMap>
+  <resultMap id="ResultMap" type="com.examSystem.entity.Result">
+    <result column="s_result" jdbcType="REAL" property="fraction" />
+    <result column="arr_name" jdbcType="VARCHAR" property="arrName" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from exam.answer
+    where answer_id = #{answerId,jdbcType=INTEGER}
+  </delete>
+  <delete id="delBysAccount" parameterType="java.lang.String">
+    delete from exam.answer
+    where s_account = #{Account,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.examSystem.entity.Answer">
+    insert into exam.answer (answer_id, arr_id, test_id, 
+      s_account, s_name, cq_answer, 
+      tfq_answer, s_result, saq_answer
+      )
+    values (#{answerId,jdbcType=INTEGER}, #{arrId,jdbcType=INTEGER}, #{testId,jdbcType=INTEGER}, 
+      #{sAccount,jdbcType=VARCHAR}, #{sName,jdbcType=VARCHAR}, #{cqAnswer,jdbcType=VARCHAR}, 
+      #{tfqAnswer,jdbcType=VARCHAR}, #{sResult,jdbcType=REAL}, #{saqAnswer,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.examSystem.entity.Answer">
+    update exam.answer
+    set arr_id = #{arrId,jdbcType=INTEGER},
+      test_id = #{testId,jdbcType=INTEGER},
+      s_account = #{sAccount,jdbcType=VARCHAR},
+      s_name = #{sName,jdbcType=VARCHAR},
+      cq_answer = #{cqAnswer,jdbcType=VARCHAR},
+      tfq_answer = #{tfqAnswer,jdbcType=VARCHAR},
+      s_result = #{sResult,jdbcType=REAL},
+      saq_answer = #{saqAnswer,jdbcType=LONGVARCHAR}
+    where answer_id = #{answerId,jdbcType=INTEGER}
+  </update>
+  <update id="addGrade" >
+    update exam.answer
+    set
+      s_result = #{Sum,jdbcType=REAL}
+    where answer_id = #{answId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select answer_id, arr_id, test_id, s_account, s_name, cq_answer, tfq_answer, s_result, 
+    saq_answer
+    from exam.answer
+    where answer_id = #{answerId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select answer_id, arr_id, test_id, s_account, s_name, cq_answer, tfq_answer, s_result,
+    saq_answer
+    from exam.answer
+  </select>
+  <select id="selCorTest" resultMap="BaseResultMap">
+    select answer_id, arr_id, test_id, s_account, s_name, cq_answer, tfq_answer, s_result,
+    saq_answer
+    from exam.answer
+    where s_result is null or trim(s_result)=''
+  </select>
+  <select id="selectBySAccount" resultMap="BaseResultMap">
+    select answer_id, arr_id, test_id, s_account, s_name, cq_answer, tfq_answer, s_result,
+    saq_answer
+    from exam.answer
+    where s_account = #{sAccount, jdbcType=VARCHAR}
+  </select>
+  <select id="selectResult" resultMap="ResultMap">
+    select answer.s_result, arrange.arr_name
+    from exam.answer, exam.arrange
+    where answer.arr_id = arrange.arr_id and
+    s_account = #{sAccount, jdbcType=VARCHAR}
+  </select>
+</mapper>

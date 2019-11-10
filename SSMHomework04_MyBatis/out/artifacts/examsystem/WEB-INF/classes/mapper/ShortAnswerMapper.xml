@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.examSystem.dao.ShortAnswerMapper">
+  <resultMap id="BaseResultMap" type="com.examSystem.entity.ShortAnswer">
+    <id column="saq_id" jdbcType="INTEGER" property="saqId" />
+    <result column="saq_content" jdbcType="LONGVARCHAR" property="saqContent" />
+    <result column="saq_correct" jdbcType="LONGVARCHAR" property="saqCorrect" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from exam.shortanswer
+    where saq_id = #{saqId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.examSystem.entity.ShortAnswer">
+    insert into exam.shortanswer (saq_id, saq_content, saq_correct
+      )
+    values (#{saqId,jdbcType=INTEGER}, #{saqContent,jdbcType=LONGVARCHAR}, #{saqCorrect,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.examSystem.entity.ShortAnswer">
+    update exam.shortanswer
+    set saq_content = #{saqContent,jdbcType=LONGVARCHAR},
+      saq_correct = #{saqCorrect,jdbcType=LONGVARCHAR}
+    where saq_id = #{saqId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select saq_id, saq_content, saq_correct
+    from exam.shortanswer
+    where saq_id = #{saqId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select saq_id, saq_content, saq_correct
+    from exam.shortanswer
+  </select>
+</mapper>
