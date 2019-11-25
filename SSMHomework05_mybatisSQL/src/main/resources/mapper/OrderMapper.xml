@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatisSQL.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.mybatisSQL.entity.Order">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mybatis.orders
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mybatisSQL.entity.Order">
+    insert into mybatis.orders (id, user_id, number, 
+      createtime, note)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{note,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.mybatisSQL.entity.Order">
+    update mybatis.orders
+    set user_id = #{userId,jdbcType=INTEGER},
+      number = #{number,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, user_id, number, createtime, note
+    from mybatis.orders
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, number, createtime, note
+    from mybatis.orders
+  </select>
+
+  <select id="selectWithUser" parameterType="java.lang.Integer" resultMap="OrderWithUser">
+    select orders.*, user.*
+    from mybatis.orders, mybatis.user
+    where orders.user_id = user.id
+    and orders.id = #{id}
+  </select>
+  <resultMap id="OrderWithUser" type="com.mybatisSQL.entity.Order">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <association property="user" javaType="com.mybatisSQL.entity.User">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="username" jdbcType="VARCHAR" property="username" />
+      <result column="birthday" jdbcType="DATE" property="birthday" />
+      <result column="sex" jdbcType="CHAR" property="sex" />
+      <result column="address" jdbcType="VARCHAR" property="address" />
+    </association>
+  </resultMap>
+
+</mapper>

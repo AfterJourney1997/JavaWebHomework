@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatisSQL.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.mybatisSQL.entity.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mybatis.user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.mybatisSQL.entity.User">
+    insert into mybatis.user (id, username, birthday, 
+      sex, address)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
+      #{sex,jdbcType=CHAR}, #{address,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.mybatisSQL.entity.User">
+    update mybatis.user
+    set username = #{username,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      sex = #{sex,jdbcType=CHAR},
+      address = #{address,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, username, birthday, sex, address
+    from mybatis.user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, username, birthday, sex, address
+    from mybatis.user
+  </select>
+
+  <select id="selectDynamic" resultMap="BaseResultMap">
+    select id, username, birthday, sex, address
+    from mybatis.user
+    <where>
+      <if test="username != null and username != ''">
+        and username like concat('%', #{username}, '%')
+      </if>
+      <if test="id != null">
+        and id in
+        <foreach collection="id" index="index" item="item" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+  <update id="updateDynamic" parameterType="com.mybatisSQL.entity.User">
+    update mybatis.user
+    <set>
+      <if test="username != null and username != ''">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null and birthday != ''">
+        birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null and sex != ''">
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="address != null and address != ''">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <insert id="insertDynamic" parameterType="com.mybatisSQL.entity.User">
+    insert into mybatis.user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="username != null and username != ''">
+        username,
+      </if>
+      <if test="birthday != null and birthday != ''">
+        birthday,
+      </if>
+      <if test="sex != null and sex != ''">
+        sex,
+      </if>
+      <if test="address != null and address != ''">
+        address,
+      </if>
+    </trim>
+
+     <trim prefix="values(" suffix=")" suffixOverrides=",">
+       <if test="username != null and username != ''">
+         #{username,jdbcType=VARCHAR},
+       </if>
+       <if test="birthday != null and birthday != ''">
+         #{birthday,jdbcType=DATE},
+       </if>
+       <if test="sex != null and sex != ''">
+         #{sex,jdbcType=CHAR},
+       </if>
+       <if test="address != null and address != ''">
+         #{address,jdbcType=VARCHAR})
+       </if>
+     </trim>
+  </insert>
+
+  <select id="selectWithOrderByUserName" parameterType="java.lang.String" resultMap="UserWithOrder">
+    select user.*, orders.id as order_id, user_id, number, createtime, note
+    from mybatis.user, mybatis.orders
+    where user.username = #{username}
+    and orders.user_id = user.id
+  </select>
+  <resultMap id="UserWithOrder" type="com.mybatisSQL.entity.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <collection property="orders" ofType="com.mybatisSQL.entity.Order">
+      <id column="order_id" jdbcType="INTEGER" property="id" />
+      <result column="user_id" jdbcType="INTEGER" property="userId" />
+      <result column="number" jdbcType="VARCHAR" property="number" />
+      <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+      <result column="note" jdbcType="VARCHAR" property="note" />
+    </collection>
+  </resultMap>
+
+  <select id="selectWithItemByUserName" parameterType="java.lang.String" resultMap="UserWithItem">
+    select u.*, o.id as order_id, user_id, number, o.createtime as order_createtime, note,
+        i.id as item_id, name, price, detail, pic, i.createtime as item_createtime
+    from mybatis.user u, mybatis.orders o, mybatis.items i, mybatis.orderdetail d
+    where u.username = #{username}
+    and o.user_id = u.id
+    and d.orders_id = o.id
+    and i.id = d.items_id
+  </select>
+  <resultMap id="UserWithItem" type="com.mybatisSQL.entity.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <collection property="orders" ofType="com.mybatisSQL.entity.Order">
+      <id column="order_id" jdbcType="INTEGER" property="id" />
+      <result column="user_id" jdbcType="INTEGER" property="userId" />
+      <result column="number" jdbcType="VARCHAR" property="number" />
+      <result column="order_createtime" jdbcType="TIMESTAMP" property="createtime" />
+      <result column="note" jdbcType="VARCHAR" property="note" />
+      <collection property="items" ofType="com.mybatisSQL.entity.Item">
+        <id column="item_id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="price" jdbcType="REAL" property="price" />
+        <result column="pic" jdbcType="VARCHAR" property="pic" />
+        <result column="item_createtime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="detail" jdbcType="LONGVARCHAR" property="detail" />
+      </collection>
+    </collection>
+  </resultMap>
+</mapper>
