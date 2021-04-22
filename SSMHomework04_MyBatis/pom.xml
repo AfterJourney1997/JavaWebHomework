@@ -18,7 +18,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <srping.version>5.1.5.RELEASE</srping.version>
-        <mybatis.version>3.4.6</mybatis.version>
+        <mybatis.version>3.5.6</mybatis.version>
         <slf4j.version>1.7.25</slf4j.version>
         <log4j.version>2.11.1</log4j.version>
         <druid.version>1.1.19</druid.version>
